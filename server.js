@@ -65,7 +65,7 @@ app.post('/tdma/v1/schemas', (req, res, next) => {
   }, 2000);
 });
 
-app.get('/v1/progress', (req, res, next) => {
+app.get('/tdma/v1/progress', (req, res, next) => {
   const { invMigrator, dataMigrator } = migrator;
   const ts = new Date();
 
@@ -116,7 +116,7 @@ app.get('/v1/progress', (req, res, next) => {
   next();
 });
 
-app.get('/v1/activities', (req, res, next) => {
+app.get('/tdma/v1/activities', (req, res, next) => {
   if (!migrator.isRunning()) {
     res.json({});
     next();
@@ -131,7 +131,7 @@ app.get('/v1/activities', (req, res, next) => {
   next();
 });
 
-app.get('/v1/start', (req, res, next) => {
+app.get('/tdma/v1/start', (req, res, next) => {
   const size = parseInt(req.query.size, 10);
   const migSpeed = parseInt(req.query.migSpeed, 10);
   migrator.start(size, migSpeed);
