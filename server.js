@@ -159,6 +159,7 @@ const TOMCAT_ERROR = `<!DOCTYPE html><html><head><title>Apache Tomcat/8.5.4 - Er
 	com.amazon.channels.PlainSocketChannel.read(PlainSocketChannel.java:192)
 </pre><p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat/8.5.4 logs.</u></p><hr class="line"><h3>Apache Tomcat/8.5.4</h3></body></html>`;
 
-app.listen(8080, function () {
-  console.log('Mock API listening on port 8080!')
+const port = process.env.PORT || 8080;
+app.listen(port, function () {
+  console.log(`Mock API listening on port ${port}!`)
 });
