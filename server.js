@@ -26,7 +26,13 @@ app.post('/tdma/v1/source/testconnection', (req, res, next) => {
       return;
     }
 
-    res.status(500).send(TOMCAT_ERROR);
+    res.status(417).send({
+      code: '1',
+      success: 'false',
+      error: '[Amazon](500310) Invalid operation: password authentication failed for user &quot;usr_rdshftadmin1&quot;',
+      details: TOMCAT_ERROR,
+      documentation: 'http://www.localhost:8080/tdma/documentation/',
+    });
     next();
   }, 2000);
 });
@@ -39,7 +45,13 @@ app.post('/tdma/v1/target/testconnection', (req, res, next) => {
       return;
     }
 
-    res.status(500).send(TOMCAT_ERROR);
+    res.status(417).send({
+      code: '1',
+      success: 'false',
+      error: '[Amazon](500310) Invalid operation: password authentication failed for user &quot;usr_rdshftadmin1&quot;',
+      details: TOMCAT_ERROR,
+      documentation: 'http://www.localhost:8080/tdma/documentation/',
+    });
     next();
   }, 2000);
 });
@@ -60,7 +72,13 @@ app.post('/tdma/v1/schemas', (req, res, next) => {
       return;
     }
 
-    res.status(500).send(TOMCAT_ERROR);
+    res.status(417).send({
+      code: '1',
+      success: 'false',
+      error: '[Amazon](500310) Invalid operation: password authentication failed for user &quot;usr_rdshftadmin1&quot;',
+      details: TOMCAT_ERROR,
+      documentation: 'http://www.localhost:8080/tdma/documentation/',
+    });
     next();
   }, 2000);
 });
