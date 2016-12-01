@@ -13,6 +13,7 @@ sudo yum -y install nodejs
 cd ~
 git clone git@github.com:gistia/teradata-tdma-mock-api.git tdma-mock-api
 sudo npm install -g yarn forever forever-service
+yarn
 sudo forever-service install tdma-mock-api --script server.js
 ```
 
