@@ -18,6 +18,17 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(auth);
 
+app.post('/tdma/v1/load', (req, res, next) => {
+  setTimeout(() => {
+    const size = 200;
+    const migSpeed = 500;
+    migrator.start(size, migSpeed);
+
+    res.json({});
+    next();
+  }, 1000);
+})
+
 app.post('/tdma/v1/source/testconnection', (req, res, next) => {
   setTimeout(() => {
     if (req.body.loginId === 'usr_rdshftadmin') {
