@@ -104,13 +104,6 @@ app.get('/tdma/v1/progress', (req, res, next) => {
     return;
   }
 
-  let throughput = undefined;
-  if (dataMigrator.startedAt) {
-    const finishedTs = dataMigrator.finishedAt || ts;
-    let elapsedTime = (finishedTs.getTime() - dataMigrator.startedAt.getTime()) / 1000;
-    throughput = dataMigrator.processedSize / elapsedTime;
-  }
-
   const started = dataMigrator.startedAt;
   const running = dataMigrator.startedAt && !dataMigrator.finishedAt;
   const latency = started ? Utils.getRandom(100) : undefined;
@@ -130,12 +123,10 @@ app.get('/tdma/v1/progress', (req, res, next) => {
     inventory_processed: invMigrator.current,
     migration_started: Utils.fmtDate(dataMigrator.startedAt),
     migration_finished: Utils.fmtDate(dataMigrator.finishedAt),
-    migration_total: dataMigrator.total,
     migration_processed: dataMigrator.current,
     migration_total_size: dataMigrator.totalSize,
     migration_processed_size: dataMigrator.processedSize,
     total_errors: migrator.inventory.migErrors,
-    throughput: throughput,
     tpt_threshold: tptThreshold,
     tpt_sessions: tptSessions,
     latency: latency,
