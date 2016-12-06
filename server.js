@@ -94,6 +94,68 @@ app.post('/tdma/v1/schemas', (req, res, next) => {
   }, 2000);
 });
 
+app.post('/tdma/v1/languages', (req, res, next) => {
+  setTimeout(() => {
+    res.send({
+      source_languages: [
+        {
+          id: 1,
+          description: 'English',
+          charsets: ['UTF8', 'iso-8859-1', 'iso-8859-9'],
+        },
+        {
+          id: 2,
+          description: 'Japanese',
+          charsets: ['Shift_JIS', 'x-euc-jp', 'iso-2022-jp'],
+        },
+        {
+          id: 3,
+          description: 'Traditional Chinese',
+          charsets: ['big5', 'x-euc-tw'],
+        },
+        {
+          id: 4,
+          description: 'Simplified Chinese',
+          charsets: ['gb2312'],
+        },
+        {
+          id: 5,
+          description: 'Russian',
+          charsets: ['iso-8859-5', 'koi8-r'],
+        },
+      ],
+      target_languages: [
+        {
+          id: 1,
+          description: 'English',
+          charsets: ['UTF8', 'iso-8859-1', 'iso-8859-9'],
+        },
+        {
+          id: 2,
+          description: 'Greek',
+          charsets: ['iso-8859-7'],
+        },
+        {
+          id: 3,
+          description: 'Japanese',
+          charsets: ['Shift_JIS', 'x-euc-jp', 'iso-2022-jp'],
+        },
+        {
+          id: 4,
+          description: 'Simplified Chinese',
+          charsets: ['gb2312'],
+        },
+        {
+          id: 5,
+          description: 'Russian',
+          charsets: ['iso-8859-5', 'koi8-r'],
+        },
+      ],
+    });
+    next();
+  }, 2000);
+});
+
 app.get('/tdma/v1/progress', (req, res, next) => {
   const { invMigrator, dataMigrator } = migrator;
   const ts = new Date();
