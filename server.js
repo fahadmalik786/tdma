@@ -94,7 +94,7 @@ app.post('/tdma/v1/schemas', (req, res, next) => {
   }, 2000);
 });
 
-app.post('/tdma/v1/languages', (req, res, next) => {
+app.get('/tdma/v1/languages', (req, res, next) => {
   setTimeout(() => {
     res.send({
       source_languages: [
