@@ -70,15 +70,18 @@ app.post('/tdma/v1/target/testconnection', (req, res, next) => {
 app.post('/tdma/v1/schemas', (req, res, next) => {
   setTimeout(() => {
     if (req.body.loginId === 'usr_rdshftadmin') {
-      res.send([
-        "pg_toast",
-        "pg_internal",
-        "pg_temp_1",
-        "pg_catalog",
-        "public",
-        "information_schema",
-        "pg_temp_7",
-      ]);
+      res.send({
+        success: "true",
+        schemas: [
+          "pg_toast",
+          "pg_internal",
+          "pg_temp_1",
+          "pg_catalog",
+          "public",
+          "information_schema",
+          "pg_temp_7",
+        ]
+      });
       next();
       return;
     }
