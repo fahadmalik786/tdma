@@ -169,7 +169,7 @@ app.post('/tdma/v1/configurations', (req, res, next) => {
   // next();
 });
 
-app.get('/tdma/v1/progress', (req, res, next) => {
+app.post('/tdma/v1/progress', (req, res, next) => {
   const { invMigrator, dataMigrator } = migrator;
   const ts = new Date();
 
@@ -211,7 +211,7 @@ app.get('/tdma/v1/progress', (req, res, next) => {
   next();
 });
 
-app.get('/tdma/v1/activities', (req, res, next) => {
+app.post('/tdma/v1/activities', (req, res, next) => {
   if (!migrator.isRunning()) {
     res.json({});
     next();
