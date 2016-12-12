@@ -21,6 +21,20 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(auth);
 
+app.post('/td2td-utility/v1/start', (req, res, next) => {
+  setTimeout(() => {
+    res.json(tdMigrator.start(req.body.runningMode));
+    next();
+  }, 1000);
+});
+
+app.get('/td2td-utility/v1/start', (req, res, next) => {
+  setTimeout(() => {
+    res.json(tdMigrator.start(req.query.runningMode, req.query.size));
+    next();
+  }, 1000);
+});
+
 app.post('/td2td-utility/v1/getJobs', (req, res, next) => {
   setTimeout(() => {
     res.json(tdMigrator.getJobs());
