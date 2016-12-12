@@ -14,7 +14,7 @@ class Td2TdMigrator {
       for(let i = 0; i < parseInt(size, 10); i++) {
         this.jobs.push({
           id: i + 1,
-          name: Utils.getRandomElement(JOB_NAMES),
+          name: Utils.removeRandomElement(JOB_NAMES),
           created: new Date().toISOString(),
           status: 'Pending',
         });
@@ -83,44 +83,8 @@ const JOB_NAMES = [
   'Employees',
   'Production',
   'Products',
+  'All Tables',
+  'HR Tables',
 ];
-//   {
-//     id: 1,
-//     name: 'Human Resources',
-//     created: '2016-12-07T23:40:29.359Z',
-//     status: 'In Progress',
-//     state: 'Export',
-//     progress: 0,
-//   },
-//   {
-//     id: 2,
-//     name: 'SAP',
-//     created: '2016-12-07T23:40:29.359Z',
-//     status: 'In Progress',
-//     state: 'Export',
-//     progress: 0,
-//   },
-//   {
-//     id: 10,
-//     name: 'Sales',
-//     created: '2016-12-07T23:40:29.359Z',
-//     status: 'Pending',
-//     scheduled_time: undefined,
-//   },
-//   {
-//     id: 11,
-//     name: 'Inventory',
-//     created: '2016-12-07T23:40:29.359Z',
-//     status: 'Pending',
-//     scheduled_time: undefined,
-//   },
-//   {
-//     id: 20,
-//     name: 'Employees',
-//     created: '2016-12-07T23:40:29.359Z',
-//     status: 'Scheduled',
-//     scheduled_time: '2016-12-08T05:30:00Z',
-//   },
-// ];
 
 module.exports = Td2TdMigrator;

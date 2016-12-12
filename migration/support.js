@@ -49,6 +49,10 @@ class Utils {
     return array[this.getRandom(array.length) - 1];
   }
 
+  static removeRandomElement(array) {
+    return array.splice(Utils.getRandom(array.length - 1), 1);
+  }
+
   static getRandomElementWithProbability(array) {
     let result = [];
     array.forEach(v => {
