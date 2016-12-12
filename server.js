@@ -3,6 +3,8 @@
 const Migrator = require('./migration/migrator');
 const { Utils } = require('./migration/support');
 
+const Td2TdMigrator = require('./migration/td2td/migrator');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -12,11 +14,24 @@ const auth = require('./middleware/auth');
 const logger = require('./middleware/logger');
 
 const migrator = new Migrator();
+const tdMigrator = new Td2TdMigrator();
 
 app.use(logger);
 app.use(bodyParser.json());
 app.use(cors());
 app.use(auth);
+
+app.post('/td2td-utility/v1/getJobs', (req, res, next) => {
+  setTimeout(() => {
+    res.json(tdMigrator.getJobs());
+    next();
+  }, 1000);
+});
+
+app.post('/td2td-utility/v1/addJob', (req, res, next) => {
+  const job = this.tdMigrator.addJob(req.body);
+  res.json({ success: "true", job });
+});
 
 app.post('/tdma/v1/load', (req, res, next) => {
   setTimeout(() => {
@@ -27,7 +42,7 @@ app.post('/tdma/v1/load', (req, res, next) => {
     res.json({});
     next();
   }, 1000);
-})
+});
 
 app.post('/tdma/v1/source/testconnection', (req, res, next) => {
   setTimeout(() => {
