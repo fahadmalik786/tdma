@@ -29,8 +29,15 @@ app.post('/td2td-utility/v1/getJobs', (req, res, next) => {
 });
 
 app.post('/td2td-utility/v1/addJob', (req, res, next) => {
-  const job = this.tdMigrator.addJob(req.body);
+  const job = tdMigrator.addJob(req.body);
   res.json({ success: "true", job });
+  next();
+});
+
+app.post('/td2td-utility/v1/startJob', (req, res, next) => {
+  const job = tdMigrator.startJob(req.body);
+  res.json({ success: "true", job });
+  next();
 });
 
 app.post('/tdma/v1/load', (req, res, next) => {
@@ -79,7 +86,7 @@ app.post('/tdma/v1/target/testconnection', (req, res, next) => {
       documentation: 'http://www.localhost:8080/tdma/documentation/',
     });
     next();
-  }, 2000);
+  }, 200);
 });
 
 app.post('/tdma/v1/schemas', (req, res, next) => {

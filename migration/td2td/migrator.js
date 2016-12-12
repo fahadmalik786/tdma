@@ -11,7 +11,7 @@ class Td2TdMigrator {
   start() {
     this._interval = setInterval(() => {
       this.jobs.forEach(j => {
-        if (j.status === 'In Progress') {
+        if (j.status === 'In Progress' && j.state !== 'Finished') {
           j.state = j.state || 'Export';
           j.progress = j.progress || 0;
           j.progress += Utils.getRandom(10);
@@ -42,6 +42,17 @@ class Td2TdMigrator {
     json.id = this.jobs[this.jobs.length - 1].id + 1;
     this.jobs.push(json);
     return json;
+  }
+
+  startJob(incomingJob) {
+    const job = this.jobs.find(j => j.id === incomingJob.id);
+    if (!job) {
+      return;
+    }
+    job.status = 'In Progress';
+    job.state = 'Export';
+    job.progress = 0;
+    return job;
   }
 }
 
