@@ -22,6 +22,10 @@ class Td2TdMigrator {
     }
     console.log('Starting jobs in', runningMode, 'mode (', this.jobs.length, 'in memory)');
     this._runningMode = runningMode;
+    this.startLoop();
+  }
+
+  startLoop() {
     this._interval = setInterval(() => {
       this.jobs.forEach(j => {
         if (j.status === 'In Progress') {
@@ -58,8 +62,18 @@ class Td2TdMigrator {
   }
 
   addJob(json) {
-    json.id = this.jobs[this.jobs.length - 1].id + 1;
-    this.jobs.push(json);
+    let id;
+
+    if (this.jobs.length) {
+      id = this.jobs[this.jobs.length - 1].id + 1;
+    } else {
+      id = 1;
+    }
+
+    const status = 'Pending';
+    const job = Object.assign({ id, status }, json);
+
+    this.jobs.push(job);
     return json;
   }
 
