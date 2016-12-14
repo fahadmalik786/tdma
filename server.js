@@ -54,6 +54,74 @@ app.post('/td2td-utility/v1/startJob', (req, res, next) => {
   next();
 });
 
+app.get('/td2td-utility/v1/getDatabaseList', (req, res, next) => {
+  setTimeout(() => {
+    res.json([
+      "Default",
+      "EXTUSER",
+      "PUBLIC",
+      "fahad_new",
+      "TDPUSER",
+      "SystemFe",
+      "SYSLIB",
+      "SysAdmin",
+      "tma",
+      "gdc_dm_report",
+      "alpha",
+      "udf",
+      "HR",
+      "MASK_USER",
+      "MASKDB",
+      "VAP"
+    ]);
+    next();
+  }, 1000);
+});
+
+app.get('/td2td-utility/v1/getTablesList/:name', (req, res, next) => {
+  setTimeout(() => {
+    res.json([
+      {
+        tableName: "REGIONS",
+        tableSize: "5"
+      },
+      {
+        tableName: "EMPLOYEES",
+        tableSize: "16"
+      },
+      {
+        tableName: "CHECKINOUT",
+        tableSize: "56"
+      },
+      {
+        tableName: "COUNTRIES",
+        tableSize: "4"
+      },
+      {
+        tableName: "JOB_HISTORY",
+        tableSize: "3"
+      },
+      {
+        tableName: "JOBS",
+        tableSize: "7"
+      },
+      {
+        tableName: "DEPARTMENTS",
+        tableSize: "4"
+      },
+      {
+        tableName: "LOCATIONS",
+        tableSize: "7"
+      },
+      {
+        tableName: "InsertJobs",
+        tableSize: "56"
+      }
+    ]);
+    next();
+  }, 1000);
+});
+
 app.post('/tdma/v1/load', (req, res, next) => {
   setTimeout(() => {
     const size = 200;
