@@ -56,68 +56,18 @@ app.post('/td2td-utility/v1/startJob', (req, res, next) => {
 
 app.get('/td2td-utility/v1/getDatabaseList', (req, res, next) => {
   setTimeout(() => {
-    res.json([
-      "Default",
-      "EXTUSER",
-      "PUBLIC",
-      "fahad_new",
-      "TDPUSER",
-      "SystemFe",
-      "SYSLIB",
-      "SysAdmin",
-      "tma",
-      "gdc_dm_report",
-      "alpha",
-      "udf",
-      "HR",
-      "MASK_USER",
-      "MASKDB",
-      "VAP"
-    ]);
+    const schemas = Utils.getRandomSchemas(Utils.getRandom(10));
+    res.json(schemas);
     next();
   }, 1000);
 });
 
 app.get('/td2td-utility/v1/getTablesList/:name', (req, res, next) => {
   setTimeout(() => {
-    res.json([
-      {
-        tableName: "REGIONS",
-        tableSize: "5"
-      },
-      {
-        tableName: "EMPLOYEES",
-        tableSize: "16"
-      },
-      {
-        tableName: "CHECKINOUT",
-        tableSize: "56"
-      },
-      {
-        tableName: "COUNTRIES",
-        tableSize: "4"
-      },
-      {
-        tableName: "JOB_HISTORY",
-        tableSize: "3"
-      },
-      {
-        tableName: "JOBS",
-        tableSize: "7"
-      },
-      {
-        tableName: "DEPARTMENTS",
-        tableSize: "4"
-      },
-      {
-        tableName: "LOCATIONS",
-        tableSize: "7"
-      },
-      {
-        tableName: "InsertJobs",
-        tableSize: "56"
-      }
-    ]);
+    const tableNames = Utils.getRandomTables(Utils.getRandom(10)).map(t => {
+      return { tableName: t, tableSize: `${Utils.getRandom(100)}` };
+    });
+    res.json(tableNames);
     next();
   }, 1000);
 });

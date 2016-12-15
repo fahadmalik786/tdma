@@ -33,8 +33,30 @@ class Utils {
     return Utils.getRandomElement(tableNames);
   }
 
+  static getRandomTables(n) {
+    const tables = [];
+    for (let i = 0; i < n; i++) {
+      const table = Utils.getRandomTable();
+      if (tables.indexOf(table) <= -1) {
+        tables.push(table);
+      }
+    }
+    return tables;
+  }
+
   static getRandomSchema() {
     return Utils.getRandomElement(schemaNames);
+  }
+
+  static getRandomSchemas(n) {
+    const schemas = [];
+    for (let i = 0; i < n; i++) {
+      const schema = Utils.getRandomSchema();
+      if (schemas.indexOf(schema) <= -1) {
+        schemas.push(schema);
+      }
+    }
+    return schemas;
   }
 
   static getRandomError() {
@@ -47,6 +69,15 @@ class Utils {
 
   static getRandomElement(array) {
     return array[this.getRandom(array.length) - 1];
+  }
+
+  static getRandomElements(n, array) {
+    const source = _.cloneDeep(array);
+    const res = [];
+    for (let i = 0; i < n; i++) {
+      res.push(removeRandomElement(source));
+    }
+    return res;
   }
 
   static removeRandomElement(array) {
