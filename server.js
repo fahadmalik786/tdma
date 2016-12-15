@@ -31,12 +31,12 @@ app.get('/td2td-utility/v1/start', (req, res, next) => {
 app.post('/td2td-utility/v1/saveSettings', (req, res, next) => {
   setTimeout(() => {
     if (req.body.sourceTdUser === 'usr_tdsource') {
-      res.status(201).send({ success: 'true' });
+      res.status(500).send({ success: 'false' });
       next();
       return;
     }
 
-    res.status(500).send({ success: 'false' });
+    res.status(201).send({ success: 'true' });
     next();
   }, 2000);
 });
