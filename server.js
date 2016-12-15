@@ -21,18 +21,53 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(auth);
 
-app.post('/td2td-utility/v1/start', (req, res, next) => {
-  setTimeout(() => {
-    res.json(tdMigrator.start(req.body.runningMode));
-    next();
-  }, 1000);
-});
-
 app.get('/td2td-utility/v1/start', (req, res, next) => {
   setTimeout(() => {
     res.json(tdMigrator.start(req.query.runningMode, req.query.size));
     next();
   }, 1000);
+});
+
+app.post('/td2td-utility/v1/saveSettings', (req, res, next) => {
+  setTimeout(() => {
+    if (req.body.sourceTdUser === 'usr_tdsource') {
+      res.status(201).send({ success: 'true' });
+      next();
+      return;
+    }
+
+    res.status(500).send({ success: 'false' });
+    next();
+  }, 2000);
+});
+
+app.post('/td2td-utility/v1/loadSettings', (req, res, next) => {
+  const settings = {
+    sourceTdIp: "SPKISL866",
+    sourceTdUser: "sourcedbc1",
+    sourceTdPassword: "sourcedbc2",
+    sourceArcUser: "sourcedbc3",
+    sourceArcPassword: "sourcedbc4",
+    targetTdIp: "10.0.0.6",
+    targetTdUser: "targetdbc1",
+    targetTdPassword: "targetdbc2",
+    targetArcUser: "targetdbc3",
+    targetArcPassword: "targetdbc4",
+    workingDirectory: "C:\\TD2TD_Working_Folder",
+    s3Bucket: "dummy_bucket",
+    accessKey: "dummyAccessKey",
+    secretAccessKey: "dummy+secretAccessKey",
+    jobMode: "download",
+    applicationMode: "aws",
+  };
+
+  setTimeout(() => {
+    res.json(settings);
+    // res.status(404).send({
+    //   success: 'false'
+    // });
+    next();
+  }, 2000);
 });
 
 app.post('/td2td-utility/v1/getJobs', (req, res, next) => {
