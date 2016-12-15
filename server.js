@@ -91,7 +91,7 @@ app.post('/td2td-utility/v1/startJob', (req, res, next) => {
 
 app.get('/td2td-utility/v1/getDatabaseList', (req, res, next) => {
   setTimeout(() => {
-    const schemas = Utils.getRandomSchemas(Utils.getRandom(10));
+    const schemas = Utils.getRandomSchemas(Utils.getRandom(100));
     res.json(schemas);
     next();
   }, 1000);
@@ -99,7 +99,7 @@ app.get('/td2td-utility/v1/getDatabaseList', (req, res, next) => {
 
 app.get('/td2td-utility/v1/getTablesList/:name', (req, res, next) => {
   setTimeout(() => {
-    const tableNames = Utils.getRandomTables(Utils.getRandom(10)).map(t => {
+    const tableNames = Utils.getRandomTables(Utils.getRandom(20)).map(t => {
       return { tableName: t, tableSize: `${Utils.getRandom(100)}` };
     });
     res.json(tableNames);
