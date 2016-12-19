@@ -120,7 +120,7 @@ app.post('/tdma/v1/load', (req, res, next) => {
 
 app.post('/tdma/v1/source/testconnection', (req, res, next) => {
   setTimeout(() => {
-    if (req.body.loginId === 'usr_rdshftadmin') {
+    if (req.body.loginId !== 'error') {
       res.send('true');
       next();
       return;
@@ -139,7 +139,7 @@ app.post('/tdma/v1/source/testconnection', (req, res, next) => {
 
 app.post('/tdma/v1/target/testconnection', (req, res, next) => {
   setTimeout(() => {
-    if (req.body.loginId === 'tma') {
+    if (req.body.loginId !== 'error') {
       res.send('true');
       next();
       return;
@@ -158,7 +158,7 @@ app.post('/tdma/v1/target/testconnection', (req, res, next) => {
 
 app.post('/tdma/v1/schemas', (req, res, next) => {
   setTimeout(() => {
-    if (req.body.loginId === 'usr_rdshftadmin') {
+    if (req.body.loginId !== 'error') {
       res.send({
         success: "true",
         schemas: [
