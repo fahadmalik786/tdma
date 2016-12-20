@@ -33,8 +33,30 @@ class Utils {
     return Utils.getRandomElement(tableNames);
   }
 
+  static getRandomTables(n) {
+    const tables = [];
+    for (let i = 0; i < n; i++) {
+      const table = Utils.getRandomTable();
+      if (tables.indexOf(table) <= -1) {
+        tables.push(table);
+      }
+    }
+    return tables;
+  }
+
   static getRandomSchema() {
     return Utils.getRandomElement(schemaNames);
+  }
+
+  static getRandomSchemas(n) {
+    const schemas = [];
+    for (let i = 0; i < n; i++) {
+      const schema = Utils.getRandomSchema();
+      if (schemas.indexOf(schema) <= -1) {
+        schemas.push(schema);
+      }
+    }
+    return schemas;
   }
 
   static getRandomError() {
@@ -47,6 +69,15 @@ class Utils {
 
   static getRandomElement(array) {
     return array[this.getRandom(array.length) - 1];
+  }
+
+  static getRandomElements(n, array) {
+    const source = _.cloneDeep(array);
+    const res = [];
+    for (let i = 0; i < n; i++) {
+      res.push(removeRandomElement(source));
+    }
+    return res;
   }
 
   static removeRandomElement(array) {
@@ -81,6 +112,14 @@ const tableNames = [
   'CUSTOMER_HISTORY', 'ORDER_HISTORY', 'ORDER_LOG_HISTORY', 'PRODUCT',
   'PRODUCT_CONFIGURATION', 'PRODUCT_HISTORY', 'PRODUCT_CONFIGURATION_HISTORY',
   'OPPORTUNITIES_HISTORY',
+  'CUSTOMERS1', 'SALES1', 'SALES_ITEMS1', 'CUSTOMER_SALES1', 'USERS1', 'LOCATION1',
+  'ORDERS1', 'ORDER_ITEMS1', 'CTD1', 'ACTIONS1', 'ACTION_LOGS1', 'ENTRIES1',
+  'DEALERS1', 'STATES1', 'CITIES1', 'COUNTRIES1', 'CONFIGURATION_SETTINGS1',
+  'OPPORTUNITIES1', 'PROJECTS1', 'TIME_ENTRIES1', 'TASKS1', 'RESOURCES1',
+  'DELIVERABLES1', 'MILESTONES1', 'CUSTOMER_LOG1', 'ORDER_LOG1',
+  'CUSTOMER_HISTORY1', 'ORDER_HISTORY1', 'ORDER_LOG_HISTORY1', 'PRODUCT1',
+  'PRODUCT_CONFIGURATION1', 'PRODUCT_HISTORY1', 'PRODUCT_CONFIGURATION_HISTORY1',
+  'OPPORTUNITIES_HISTORY1',
 ];
 
 const schemaNames = [
@@ -88,6 +127,18 @@ const schemaNames = [
   'PRODUCTION', 'TEST', 'INT', 'INTEGRATION', 'STOCK', 'DEV', 'DEVELOPMENT',
   'TOOLS', 'SC42', 'GE_INVENTORY_SCHEMA', 'ABC_SALES', '_HISTORY',
   '_ARCHIVE', 'MIGRATION',
+  'HR1', 'HUMAN_RESOURCES1', 'FINANCE1', 'FIN1', 'SALES1', 'SLS1', 'PROD1',
+  'PRODUCTION1', 'TEST1', 'INT1', 'INTEGRATION1', 'STOCK1', 'DEV1', 'DEVELOPMENT1',
+  'TOOLS1', 'SC421', 'GE_INVENTORY_SCHEMA1', 'ABC_SALES1', '_HISTORY1',
+  '_ARCHIVE1', 'MIGRATION1',
+  'HR2', 'HUMAN_RESOURCES2', 'FINANCE2', 'FIN2', 'SALES2', 'SLS2', 'PROD2',
+  'PRODUCTION2', 'TEST2', 'INT2', 'INTEGRATION2', 'STOCK2', 'DEV2', 'DEVELOPMENT2',
+  'TOOLS2', 'SC422', 'GE_INVENTORY_SCHEMA2', 'ABC_SALES2', '_HISTORY2',
+  '_ARCHIVE2', 'MIGRATION2',
+  'HR3', 'HUMAN_RESOURCES3', 'FINANCE3', 'FIN3', 'SALES3', 'SLS3', 'PROD3',
+  'PRODUCTION3', 'TEST3', 'INT3', 'INTEGRATION3', 'STOCK3', 'DEV3', 'DEVELOPMENT3',
+  'TOOLS3', 'SC423', 'GE_INVENTORY_SCHEMA3', 'ABC_SALES3', '_HISTORY3',
+  '_ARCHIVE3', 'MIGRATION3',
 ];
 
 const errorMessages = [
