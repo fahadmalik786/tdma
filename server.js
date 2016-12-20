@@ -72,6 +72,12 @@ app.post('/td2td-utility/v1/runJob/:jobName', (req, res, next) => {
   next();
 });
 
+app.post('/td2td-utility/v1/scheduleJob', (req, res, next) => {
+  const job = tdMigrator.scheduleJob(req.body);
+  res.json({ success: "true", job });
+  next();
+});
+
 app.get('/td2td-utility/v1/getDatabaseList', (req, res, next) => {
   setTimeout(() => {
     const schemas = Utils.getRandomSchemas(Utils.getRandom(100));

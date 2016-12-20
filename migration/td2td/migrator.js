@@ -87,6 +87,19 @@ class Td2TdMigrator {
     return json;
   }
 
+  scheduleJob(incomingJob) {
+    const job = this.jobs.find(j => j.name === incomingJob.name);
+
+    if (!job) {
+      return;
+    }    
+
+    job.status = 'Scheduled';
+    job.scheduled_time = incomingJob.scheduledTime
+
+    return job;
+  }
+
   startJob(jobName) {
     const job = this.jobs.find(j => j.name === jobName);
     if (!job) {
