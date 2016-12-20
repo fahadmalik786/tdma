@@ -62,23 +62,15 @@ class Td2TdMigrator {
   }
 
   addJob(json) {
-    let id;
-
-    if (this.jobs.length) {
-      id = this.jobs[this.jobs.length - 1].id + 1;
-    } else {
-      id = 1;
-    }
-
     const status = 'Pending';
-    const job = Object.assign({ id, status }, json);
+    const job = Object.assign({ status }, json);
 
     this.jobs.push(job);
     return json;
   }
 
-  startJob(incomingJob) {
-    const job = this.jobs.find(j => j.id === incomingJob.id);
+  startJob(jobName) {
+    const job = this.jobs.find(j => j.name === jobName);
     if (!job) {
       return;
     }
