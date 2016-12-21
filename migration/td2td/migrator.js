@@ -12,7 +12,7 @@ class Td2TdMigrator {
   }
 
   reload() {
-    this.config = this._config.get('td2td-settings');
+    this.config = this._config.get('td2td-settings', {});
   }
 
   start(size) {
@@ -87,15 +87,17 @@ class Td2TdMigrator {
     return json;
   }
 
-  scheduleJob(incomingJob) {
-    const job = this.jobs.find(j => j.name === incomingJob.name);
+  scheduleJob(jobName, scheduledTime) {
+    console.log('this.jobs', this.jobs);
+    
+    const job = this.jobs.find(j => j.name === jobName);
 
     if (!job) {
       return;
     }    
 
     job.status = 'Scheduled';
-    job.scheduled_time = incomingJob.scheduledTime
+    job.scheduled_time = scheduledTime;
 
     return job;
   }

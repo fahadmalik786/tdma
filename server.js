@@ -72,8 +72,14 @@ app.post('/td2td-utility/v1/runJob/:jobName', (req, res, next) => {
   next();
 });
 
-app.post('/td2td-utility/v1/scheduleJob', (req, res, next) => {
-  const job = tdMigrator.scheduleJob(req.body);
+app.post('/td2td-utility/v1/scheduleJob/:jobName', (req, res, next) => {
+  if (!req.params.jobName) {
+    res.status(422).json({success: false, error: "missing job name"});
+    next();
+    return;
+  }
+
+  const job = tdMigrator.scheduleJob(req.params.jobName, req.body.scheduledTime);
   res.json({ success: "true", job });
   next();
 });
