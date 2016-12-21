@@ -87,14 +87,16 @@ class Td2TdMigrator {
     return json;
   }
 
+  findJobByName(jobName) {
+    return this.jobs.find(j => j.jobName === jobName);
+  }
+
   scheduleJob(jobName, scheduledTime) {
-    console.log('this.jobs', this.jobs);
-    
-    const job = this.jobs.find(j => j.name === jobName);
+    const job = this.findJobByName(jobName);
 
     if (!job) {
       return;
-    }    
+    }
 
     job.status = 'Scheduled';
     job.scheduled_time = scheduledTime;
@@ -103,13 +105,16 @@ class Td2TdMigrator {
   }
 
   startJob(jobName) {
-    const job = this.jobs.find(j => j.name === jobName);
+    const job = this.findJobByName(jobName);
+
     if (!job) {
       return;
     }
+
     job.status = 'In Progress';
     job.state = this.states[0];
     job.progress = 0;
+
     return job;
   }
 }
