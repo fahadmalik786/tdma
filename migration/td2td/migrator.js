@@ -91,6 +91,18 @@ class Td2TdMigrator {
     return this.jobs.find(j => j.jobName === jobName);
   }
 
+  deleteJob(jobName) {
+    const job = this.findJobByName(jobName);
+
+    if (!job) {
+      return;
+    }
+
+    this.jobs.splice(this.jobs.indexOf(job), 1);
+
+    return job;
+  }
+
   scheduleJob(jobName, scheduledTime) {
     const job = this.findJobByName(jobName);
 
