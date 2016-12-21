@@ -1,5 +1,6 @@
 'use strict';
 
+const Config = require('./config');
 const Migrator = require('./migration/migrator');
 const { Utils } = require('./migration/support');
 
@@ -13,8 +14,9 @@ const app = express();
 const auth = require('./middleware/auth');
 const logger = require('./middleware/logger');
 
+const config = new Config();
 const migrator = new Migrator();
-const tdMigrator = new Td2TdMigrator();
+const tdMigrator = new Td2TdMigrator(config);
 
 app.use(logger);
 app.use(bodyParser.json());
@@ -23,49 +25,24 @@ app.use(auth);
 
 app.get('/td2td-utility/v1/start', (req, res, next) => {
   setTimeout(() => {
-    res.json(tdMigrator.start(req.query.runningMode, req.query.size));
+    res.json(tdMigrator.start(req.query.size));
     next();
   }, 1000);
 });
 
 app.post('/td2td-utility/v1/saveSettings', (req, res, next) => {
   setTimeout(() => {
-    if (req.body.sourceTdUser === 'usr_tdsource') {
-      res.status(500).send({ success: 'false' });
-      next();
-      return;
-    }
-
+    config.set('td2td-settings', req.body);
+    tdMigrator.reload();
     res.status(201).send({ success: 'true' });
     next();
   }, 2000);
 });
 
 app.post('/td2td-utility/v1/loadSettings', (req, res, next) => {
-  const settings = {
-    sourceTdIp: "SPKISL866",
-    sourceTdUser: "sourcedbc1",
-    sourceTdPassword: "sourcedbc2",
-    sourceArcUser: "sourcedbc3",
-    sourceArcPassword: "sourcedbc4",
-    targetTdIp: "10.0.0.6",
-    targetTdUser: "targetdbc1",
-    targetTdPassword: "targetdbc2",
-    targetArcUser: "targetdbc3",
-    targetArcPassword: "targetdbc4",
-    workingDirectory: "C:\\TD2TD_Working_Folder",
-    s3Bucket: "dummy_bucket",
-    accessKey: "dummyAccessKey",
-    secretAccessKey: "dummy+secretAccessKey",
-    jobMode: "download",
-    applicationMode: "aws",
-  };
-
   setTimeout(() => {
+    const settings = config.get('td2td-settings', {});
     res.json(settings);
-    // res.status(404).send({
-    //   success: 'false'
-    // });
     next();
   }, 2000);
 });
@@ -84,7 +61,6 @@ app.post('/td2td-utility/v1/addJob', (req, res, next) => {
 });
 
 app.post('/td2td-utility/v1/runJob/:jobName', (req, res, next) => {
-  console.log('params', req.params.jobName);
   if (!req.params.jobName) {
     res.status(422).json({success: false, error: "missing job name"});
     next();
