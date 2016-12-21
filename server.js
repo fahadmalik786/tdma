@@ -14,9 +14,9 @@ const app = express();
 const auth = require('./middleware/auth');
 const logger = require('./middleware/logger');
 
-const migrator = new Migrator();
-const tdMigrator = new Td2TdMigrator();
 const config = new Config();
+const migrator = new Migrator();
+const tdMigrator = new Td2TdMigrator(config);
 
 app.use(logger);
 app.use(bodyParser.json());
@@ -25,7 +25,7 @@ app.use(auth);
 
 app.get('/td2td-utility/v1/start', (req, res, next) => {
   setTimeout(() => {
-    res.json(tdMigrator.start(req.query.runningMode, req.query.size));
+    res.json(tdMigrator.start(req.query.size));
     next();
   }, 1000);
 });
@@ -33,6 +33,7 @@ app.get('/td2td-utility/v1/start', (req, res, next) => {
 app.post('/td2td-utility/v1/saveSettings', (req, res, next) => {
   setTimeout(() => {
     config.set('td2td-settings', req.body);
+    tdMigrator.reload();
     res.status(201).send({ success: 'true' });
     next();
   }, 2000);
@@ -60,7 +61,6 @@ app.post('/td2td-utility/v1/addJob', (req, res, next) => {
 });
 
 app.post('/td2td-utility/v1/runJob/:jobName', (req, res, next) => {
-  console.log('params', req.params.jobName);
   if (!req.params.jobName) {
     res.status(422).json({success: false, error: "missing job name"});
     next();

@@ -1,14 +1,21 @@
 const { Utils } = require('../support');
 
-const BackupStates = ['Export', 'Compress', 'Encryption', 'Upload'];
-const RestoreStates = ['Download', 'Decryption', 'Uncompress', 'Import'];
+const UploadStates = ['Export', 'Compress', 'Encryption', 'Upload'];
+const DownloadStates = ['Download', 'Decryption', 'Uncompress', 'Import'];
 
 class Td2TdMigrator {
-  constructor(size) {
+  constructor(config) {
+    this._config = config;
     this.jobs = [];
+    this.reload();
+    this.start();
   }
 
-  start(runningMode, size) {
+  reload() {
+    this.config = this._config.get('td2td-settings');
+  }
+
+  start(size) {
     if (size) {
       console.log('Creating', size, 'jobs...');
       for(let i = 0; i < parseInt(size, 10); i++) {
@@ -20,8 +27,8 @@ class Td2TdMigrator {
         });
       }
     }
-    console.log('Starting jobs in', runningMode, 'mode (', this.jobs.length, 'in memory)');
-    this._runningMode = runningMode;
+    console.log('Starting jobs in', this.config.applicationMode, 'mode (', this.jobs.length, 'in memory)');
+    this.applicationMode = this.config.applicationMode;
     this.startLoop();
   }
 
@@ -45,13 +52,24 @@ class Td2TdMigrator {
   }
 
   get states() {
-    return this._runningMode === 'backup' ? BackupStates : RestoreStates;
+    let states = this.config.jobMode === 'upload' ? UploadStates : DownloadStates;
+    if (this.config.applicationMode === 'tmc') {
+      const uploadIdx = states.indexOf('Upload');
+      const downloadIdx = states.indexOf('Download');
+      if (uploadIdx > -1) {
+        states.splice(uploadIdx, 1);
+      }
+      if (downloadIdx > -1) {
+        states.splice(downloadIdx, 1);
+      }
+    }
+    return states;
   }
 
   moveToNextState(job) {
     const pos = this.states.indexOf(job.state);
     if (pos === this.states.length - 1) {
-      return false
+      return false;
     }
     job.state = this.states[pos + 1];
     return true;
