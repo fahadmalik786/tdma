@@ -39,7 +39,7 @@ app.post('/td2td/v1/saveSettings', (req, res, next) => {
   }, 2000);
 });
 
-app.post('/td2td/v1/loadSettings', (req, res, next) => {
+app.get('/td2td/v1/loadSettings', (req, res, next) => {
   setTimeout(() => {
     const settings = config.get('td2td-settings', {});
     res.json(settings);
