@@ -12,7 +12,7 @@ class Td2TdMigrator {
   }
 
   reload() {
-    this.config = this._config.get('td2td-settings');
+    this.config = this._config.get('td2td-settings', {});
   }
 
   start(size) {
@@ -87,14 +87,46 @@ class Td2TdMigrator {
     return json;
   }
 
-  startJob(jobName) {
-    const job = this.jobs.find(j => j.name === jobName);
+  findJobByName(jobName) {
+    return this.jobs.find(j => j.jobName === jobName);
+  }
+
+  deleteJob(jobName) {
+    const job = this.findJobByName(jobName);
+
     if (!job) {
       return;
     }
+
+    this.jobs.splice(this.jobs.indexOf(job), 1);
+
+    return job;
+  }
+
+  scheduleJob(jobName, scheduledTime) {
+    const job = this.findJobByName(jobName);
+
+    if (!job) {
+      return;
+    }
+
+    job.status = 'Scheduled';
+    job.scheduled_time = scheduledTime;
+
+    return job;
+  }
+
+  startJob(jobName) {
+    const job = this.findJobByName(jobName);
+
+    if (!job) {
+      return;
+    }
+
     job.status = 'In Progress';
     job.state = this.states[0];
     job.progress = 0;
+
     return job;
   }
 }

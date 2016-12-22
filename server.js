@@ -72,6 +72,30 @@ app.post('/td2td-utility/v1/runJob/:jobName', (req, res, next) => {
   next();
 });
 
+app.post('/td2td-utility/v1/deleteJob/:jobName', (req, res, next) => {
+  if (!req.params.jobName) {
+    res.status(422).json({success: false, error: "missing job name"});
+    next();
+    return;
+  }
+
+  const job = tdMigrator.deleteJob(req.params.jobName);
+  res.json({ success: "true", job });
+  next();
+});
+
+app.post('/td2td-utility/v1/scheduleJob/:jobName', (req, res, next) => {
+  if (!req.params.jobName) {
+    res.status(422).json({success: false, error: "missing job name"});
+    next();
+    return;
+  }
+
+  const job = tdMigrator.scheduleJob(req.params.jobName, req.body.scheduledTime);
+  res.json({ success: "true", job });
+  next();
+});
+
 app.get('/td2td-utility/v1/getDatabaseList', (req, res, next) => {
   setTimeout(() => {
     const schemas = Utils.getRandomSchemas(Utils.getRandom(100));
