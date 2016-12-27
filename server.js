@@ -23,6 +23,10 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(auth);
 
+/**
+ * Teradata to Teradata endpoints
+ */
+
 app.get('/td2td/v1/start', (req, res, next) => {
   setTimeout(() => {
     res.json(tdMigrator.start(req.query.size));
@@ -30,7 +34,7 @@ app.get('/td2td/v1/start', (req, res, next) => {
   }, 1000);
 });
 
-app.post('/td2td/v1/saveSettings', (req, res, next) => {
+app.post('/td2td/v1/save/settings', (req, res, next) => {
   setTimeout(() => {
     config.set('td2td-settings', req.body);
     tdMigrator.reload();
@@ -39,7 +43,7 @@ app.post('/td2td/v1/saveSettings', (req, res, next) => {
   }, 2000);
 });
 
-app.get('/td2td/v1/loadSettings', (req, res, next) => {
+app.get('/td2td/v1/load/settings', (req, res, next) => {
   setTimeout(() => {
     const settings = config.get('td2td-settings', {});
     res.json(settings);
@@ -47,20 +51,20 @@ app.get('/td2td/v1/loadSettings', (req, res, next) => {
   }, 2000);
 });
 
-app.post('/td2td/v1/getJobs', (req, res, next) => {
+app.post('/td2td/v1/load/jobs', (req, res, next) => {
   setTimeout(() => {
     res.json(tdMigrator.getJobs());
     next();
   }, 1000);
 });
 
-app.post('/td2td/v1/addJob', (req, res, next) => {
+app.post('/td2td/v1/save/job', (req, res, next) => {
   const job = tdMigrator.addJob(req.body);
   res.json({ success: "true", job });
   next();
 });
 
-app.post('/td2td/v1/runJob/:jobName', (req, res, next) => {
+app.post('/td2td/v1/run/:jobName', (req, res, next) => {
   if (!req.params.jobName) {
     res.status(422).json({success: false, error: "missing job name"});
     next();
@@ -96,7 +100,7 @@ app.post('/td2td/v1/scheduleJob/:jobName', (req, res, next) => {
   next();
 });
 
-app.get('/td2td/v1/getDatabaseList', (req, res, next) => {
+app.get('/td2td/v1/load/databases', (req, res, next) => {
   setTimeout(() => {
     const schemas = Utils.getRandomSchemas(Utils.getRandom(100));
     res.json(schemas);
@@ -104,7 +108,7 @@ app.get('/td2td/v1/getDatabaseList', (req, res, next) => {
   }, 1000);
 });
 
-app.get('/td2td/v1/getTablesList/:name', (req, res, next) => {
+app.get('/td2td/v1/load/db/:name', (req, res, next) => {
   setTimeout(() => {
     const tableNames = Utils.getRandomTables(Utils.getRandom(20)).map(t => {
       return { tableName: t, tableSize: `${Utils.getRandom(100)}` };
@@ -113,6 +117,10 @@ app.get('/td2td/v1/getTablesList/:name', (req, res, next) => {
     next();
   }, 1000);
 });
+
+/**
+ * Redshift to Teradata endpoints
+ */
 
 app.post('/tdma/v1/load', (req, res, next) => {
   setTimeout(() => {
