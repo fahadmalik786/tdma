@@ -27,14 +27,15 @@ app.use(auth);
  * Teradata to Teradata endpoints
  */
 
-app.get('/td2td/v1/start', (req, res, next) => {
+app.get('/td2td/v1/settings', (req, res, next) => {
   setTimeout(() => {
-    res.json(tdMigrator.start(req.query.size));
+    const settings = config.get('td2td-settings', {});
+    res.json(settings);
     next();
-  }, 1000);
+  }, 2000);
 });
 
-app.post('/td2td/v1/save/settings', (req, res, next) => {
+app.put('/td2td/v1/settings', (req, res, next) => {
   setTimeout(() => {
     config.set('td2td-settings', req.body);
     tdMigrator.reload();
@@ -43,28 +44,38 @@ app.post('/td2td/v1/save/settings', (req, res, next) => {
   }, 2000);
 });
 
-app.get('/td2td/v1/load/settings', (req, res, next) => {
+app.get('/td2td/v1/databases', (req, res, next) => {
   setTimeout(() => {
-    const settings = config.get('td2td-settings', {});
-    res.json(settings);
+    const schemas = Utils.getRandomSchemas(Utils.getRandom(100));
+    res.json(schemas);
     next();
-  }, 2000);
+  }, 1000);
 });
 
-app.post('/td2td/v1/load/jobs', (req, res, next) => {
+app.get('/td2td/v1/databases/:name/tables', (req, res, next) => {
+  setTimeout(() => {
+    const tableNames = Utils.getRandomTables(Utils.getRandom(20)).map(t => {
+      return { tableName: t, tableSize: `${Utils.getRandom(100)}` };
+    });
+    res.json(tableNames);
+    next();
+  }, 1000);
+});
+
+app.get('/td2td/v1/jobs', (req, res, next) => {
   setTimeout(() => {
     res.json(tdMigrator.getJobs());
     next();
   }, 1000);
 });
 
-app.post('/td2td/v1/save/job', (req, res, next) => {
+app.post('/td2td/v1/jobs', (req, res, next) => {
   const job = tdMigrator.addJob(req.body);
   res.json({ success: "true", job });
   next();
 });
 
-app.post('/td2td/v1/run/:jobName', (req, res, next) => {
+app.post('/td2td/v1/run-job/:jobName', (req, res, next) => {
   if (!req.params.jobName) {
     res.status(422).json({success: false, error: "missing job name"});
     next();
@@ -76,7 +87,7 @@ app.post('/td2td/v1/run/:jobName', (req, res, next) => {
   next();
 });
 
-app.post('/td2td/v1/deleteJob/:jobName', (req, res, next) => {
+app.delete('/td2td/v1/jobs/:jobName', (req, res, next) => {
   if (!req.params.jobName) {
     res.status(422).json({success: false, error: "missing job name"});
     next();
@@ -88,7 +99,7 @@ app.post('/td2td/v1/deleteJob/:jobName', (req, res, next) => {
   next();
 });
 
-app.post('/td2td/v1/scheduleJob/:jobName', (req, res, next) => {
+app.post('/td2td/v1/schedule-job/:jobName', (req, res, next) => {
   if (!req.params.jobName) {
     res.status(422).json({success: false, error: "missing job name"});
     next();
@@ -98,24 +109,6 @@ app.post('/td2td/v1/scheduleJob/:jobName', (req, res, next) => {
   const job = tdMigrator.scheduleJob(req.params.jobName, req.body.scheduledTime);
   res.json({ success: "true", job });
   next();
-});
-
-app.get('/td2td/v1/load/databases', (req, res, next) => {
-  setTimeout(() => {
-    const schemas = Utils.getRandomSchemas(Utils.getRandom(100));
-    res.json(schemas);
-    next();
-  }, 1000);
-});
-
-app.get('/td2td/v1/load/db/:name', (req, res, next) => {
-  setTimeout(() => {
-    const tableNames = Utils.getRandomTables(Utils.getRandom(20)).map(t => {
-      return { tableName: t, tableSize: `${Utils.getRandom(100)}` };
-    });
-    res.json(tableNames);
-    next();
-  }, 1000);
 });
 
 /**
