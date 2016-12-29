@@ -1,7 +1,7 @@
 const { Utils } = require('../support');
 
-const UploadStates = ['Export', 'Compress', 'Encryption', 'Upload'];
-const DownloadStates = ['Download', 'Decryption', 'Uncompress', 'Import'];
+const UploadStates = ['Start', 'Export', 'Compress', 'Encrypt', 'Upload', 'JobComplete'];
+const DownloadStates = ['Start', 'Download', 'Decrypt', 'Uncompress', 'Migrate', 'JobComplete'];
 
 class Td2TdMigrator {
   constructor(config) {
@@ -36,12 +36,19 @@ class Td2TdMigrator {
     this._interval = setInterval(() => {
       this.jobs.forEach(j => {
         if (j.status === 'In Progress') {
-          j.state = j.state || states[0];
-          j.progress = j.progress || 0;
-          j.progress += Utils.getRandom(10);
+          j.stateStr = j.stateStr || states[0];
+          j.progress = j.progress || '0';
+          j.progress = '' + (parseInt(j.progress, 10) + Utils.getRandom(10));
 
-          if (j.progress >= 100) {
-            j.progress = 0;
+          if (parseInt(j.progress, 10) >= 100) {
+            j.progress = '0';
+            if (!this.moveToNextState(j)) {
+              j.status = 'Finished';
+            }
+          }
+
+          if (j.stateStr === 'Start' || j.stateStr === 'JobComplete') {
+            j.progress = '0';
             if (!this.moveToNextState(j)) {
               j.status = 'Finished';
             }
@@ -67,11 +74,11 @@ class Td2TdMigrator {
   }
 
   moveToNextState(job) {
-    const pos = this.states.indexOf(job.state);
+    const pos = this.states.indexOf(job.stateStr);
     if (pos === this.states.length - 1) {
       return false;
     }
-    job.state = this.states[pos + 1];
+    job.stateStr = this.states[pos + 1];
     return true;
   }
 
@@ -124,8 +131,8 @@ class Td2TdMigrator {
     }
 
     job.status = 'In Progress';
-    job.state = this.states[0];
-    job.progress = 0;
+    job.stateStr = this.states[0];
+    job.progress = '0';
 
     return job;
   }
