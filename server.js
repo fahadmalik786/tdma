@@ -87,14 +87,15 @@ app.post('/td2td/v1/run-job/:jobName', (req, res, next) => {
   next();
 });
 
-app.delete('/td2td/v1/jobs/:jobName', (req, res, next) => {
-  if (!req.params.jobName) {
+app.post('/td2td/v1/delete', (req, res, next) => {
+  if (!req.body || !req.body.length) {
     res.status(422).json({success: false, error: "missing job name"});
     next();
     return;
   }
 
-  const job = tdMigrator.deleteJob(req.params.jobName);
+  const jobName = req.body[0];
+  const job = tdMigrator.deleteJob(jobName);
   res.json({ success: "true", job });
   next();
 });
