@@ -112,6 +112,23 @@ app.post('/td2td/v1/schedule-job/:jobName', (req, res, next) => {
   next();
 });
 
+app.post('/td2td/v1/upload', (req, res, next) => {
+  setTimeout(() => {
+    res.json({ success: "true" });
+    next();
+  }, 1000);
+});
+
+app.post('/td2td/v1/download', (req, res, next) => {
+  setTimeout(() => {
+    for(let i = 0; i < Utils.getRandom(20); i++) {
+      tdMigrator.addJob({ jobName: `dljob${i+1}` });
+    }
+    res.json({ success: "true" });
+    next();
+  }, 1000);
+});
+
 /**
  * Redshift to Teradata endpoints
  */
