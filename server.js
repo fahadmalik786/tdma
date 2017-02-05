@@ -100,15 +100,19 @@ app.post('/td2td/v1/delete', (req, res, next) => {
   next();
 });
 
-app.post('/td2td/v1/schedule-job/:jobName', (req, res, next) => {
-  if (!req.params.jobName) {
-    res.status(422).json({success: false, error: "missing job name"});
+app.post('/td2td/v1/schedule', (req, res, next) => {
+  if (!req.body || !req.body.length) {
+    res.status(422).json({success: false, error: "missing job data"});
     next();
     return;
   }
 
-  const job = tdMigrator.scheduleJob(req.params.jobName, req.body.scheduledTime);
-  res.json({ success: "true", job });
+  req.body.forEach(payload => {
+    const { jobName, scheduleTSUI } = payload;
+    const job = tdMigrator.scheduleJob(jobName, scheduleTSUI);
+  });
+
+  res.status(200).send();
   next();
 });
 

@@ -90,6 +90,10 @@ class Td2TdMigrator {
     const status = 'Pending';
     const job = Object.assign({ status }, json);
 
+    if (job.scheduleTSUI) {
+      job.scheduledTime = job.scheduleTSUI
+    }
+
     this.jobs.push(job);
     return json;
   }
@@ -118,6 +122,7 @@ class Td2TdMigrator {
     }
 
     job.status = 'Scheduled';
+    // job.scheduledTime = scheduledTime;
     job.scheduled_time = scheduledTime;
 
     return job;
