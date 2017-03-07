@@ -31,6 +31,10 @@ class Migrator {
     return this.inventory.activities.filter(a => a.type.indexOf('migrated') > -1 && a.success);
   }
 
+  getDataMigrationFileActivities() {
+    return this.inventory.files;
+  }
+
   getErrors() {
     return this.inventory.activities.filter(a => !a.success);
   }
