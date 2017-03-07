@@ -1,9 +1,12 @@
 const Utils = require('./support').Utils;
 
+let idx = 0;
+
 class Inventory {
   constructor() {
     this.tables = [];
     this.activities = [];
+    this.files = [];
     this.invErrors = 0;
     this.migErrors = 0;
     this.length = 0;
@@ -53,6 +56,10 @@ class Inventory {
     table.migrationSuccess = !isError;
     this.migPointer++;
 
+    if (Utils.takeChance(3)) {
+      this.addFile();
+    }
+
     if (isError) {
       this.migErrors++;
     }
@@ -72,6 +79,18 @@ class Inventory {
     }
 
     this.activities.push({ timestamp, type, content, details, success });
+  }
+
+  addFile() {
+    const timestamp = new Date();
+    const table = Utils.getRandomTable().toLowerCase();
+    const leftPad = number => number <= 99999 ? (`0000${number}`).slice(-5) : number;
+    const num = leftPad(idx);
+    const message = Utils.takeChance(3) ? `mig_${num}_${table}.idk` : `inv_${num}_${table}.idk`;
+
+    idx++;
+
+    this.files.push({ timestamp, message });
   }
 
   get totalSize() {

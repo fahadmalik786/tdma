@@ -3,6 +3,7 @@
 const Config = require('./config');
 const Migrator = require('./migration/migrator');
 const { Utils } = require('./migration/support');
+const fs = require('fs');
 
 const Td2TdMigrator = require('./migration/td2td/migrator');
 
@@ -340,8 +341,15 @@ app.get('/tdma/v1/activities', (req, res, next) => {
   const timestamp = Utils.fmtDate(new Date());
   const inventory_activities = migrator.getInventoryActivities().slice(-30).reverse();
   const data_migration_activities = migrator.getDataMigrationActivities().slice(-30).reverse();
+  const data_migration_files = migrator.getDataMigrationFileActivities().slice(-30).reverse();
   const errors = migrator.getErrors().slice(-30).reverse();
-  res.json({ timestamp, inventory_activities, data_migration_activities, errors });
+  res.json({
+    timestamp,
+    inventory_activities,
+    data_migration_activities,
+    data_migration_files,
+    errors,
+  });
   next();
 });
 
