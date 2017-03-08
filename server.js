@@ -18,6 +18,7 @@ const logger = require('./middleware/logger');
 const config = new Config();
 const migrator = new Migrator();
 const tdMigrator = new Td2TdMigrator(config);
+var configuration = {};
 
 app.use(logger);
 app.use(bodyParser.json());
@@ -281,12 +282,33 @@ app.get('/tdma/v1/languages', (req, res, next) => {
 
 app.post('/tdma/v1/configurations', (req, res, next) => {
   setTimeout(() => {
+    var data = req.body;
+    data.forEach(function (item) {
+       console.log(`Saving configuration:` + item.key + ', ' + item.value);
+       configuration[item.key] = item.value;
+    });   
     res.json({});
     next();
   }, 1000);
 
   // res.status(417).json(CONFIG_ERROR_JSON);
   // next();
+});
+
+app.get('/tdma/v1/configurations/:config', (req, res, next) => {
+  setTimeout(() => {
+    if (configuration[req.params.config] != undefined) {
+      res.send(      
+          {
+            key: req.params.config,
+            value: configuration[req.params.config]
+        }
+      );
+    }else {
+      res.send({});
+    }
+    next();
+  }, 1000);
 });
 
 app.get('/tdma/v1/progress', (req, res, next) => {
