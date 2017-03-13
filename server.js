@@ -341,13 +341,14 @@ app.get('/tdma/v1/activities', (req, res, next) => {
   const timestamp = Utils.fmtDate(new Date());
   const inventory_activities = migrator.getInventoryActivities().slice(-30).reverse();
   const data_migration_activities = migrator.getDataMigrationActivities().slice(-30).reverse();
-  const data_migration_files = migrator.getDataMigrationFileActivities().slice(-30).reverse();
+  const inprogress_activities = migrator.getDataMigrationInProgressActivities();
   const errors = migrator.getErrors().slice(-30).reverse();
+
   res.json({
     timestamp,
     inventory_activities,
     data_migration_activities,
-    data_migration_files,
+    inprogress_activities,
     errors,
   });
   next();

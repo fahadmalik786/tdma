@@ -12,6 +12,7 @@ class Inventory {
     this.length = 0;
     this.currentSchema = undefined;
     this.migPointer = 0;
+    this.tablePercentageBuffer = [];
   }
 
   addTable() {
@@ -45,6 +46,7 @@ class Inventory {
       this.invErrors++;
     }
     this.tables.push(table);
+    this.tablePercentageBuffer.push({ name: table.name, percentage: 0 });
     this.addActivity(isError, 'table-inv', table.name);
   }
 
@@ -56,9 +58,7 @@ class Inventory {
     table.migrationSuccess = !isError;
     this.migPointer++;
 
-    if (Utils.takeChance(3)) {
-      this.addFile();
-    }
+    this.addPercentage();
 
     if (isError) {
       this.migErrors++;
@@ -79,6 +79,22 @@ class Inventory {
     }
 
     this.activities.push({ timestamp, type, content, details, success });
+  }
+
+  getDataMigrationInProgressActivities() {
+    return this.tablePercentage || [];
+  }
+
+  addPercentage() {
+    this.tablePercentageBuffer.forEach(tp => {
+      if (tp.percentage < 100) {
+        if (Utils.takeChance(5)) {
+          tp.percentage += Utils.getRandom(15);
+          tp.percentage = Math.min(tp.percentage, 100);
+        }
+      }
+    });
+    this.tablePercentage = this.tablePercentageBuffer.filter(tp => tp.percentage < 100).slice(0, 5);
   }
 
   addFile() {
