@@ -13,6 +13,7 @@ class Inventory {
     this.currentSchema = undefined;
     this.migPointer = 0;
     this.tablePercentageBuffer = [];
+    this.migrationSchemas = Utils.getRandomScheduledSchemas(Utils.getRandom(10));
   }
 
   addTable() {

@@ -35,6 +35,10 @@ class Migrator {
     return this.inventory.tablePercentage;
   }
 
+  getMigrationSchemas() {
+    return this.inventory.migrationSchemas;
+  }
+
   getErrors() {
     return this.inventory.activities.filter(a => !a.success);
   }

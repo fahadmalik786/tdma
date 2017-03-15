@@ -217,6 +217,19 @@ app.post('/tdma/v1/schemas', (req, res, next) => {
   }, 2000);
 });
 
+app.get('/tdma/v1/migration-schemas', (req, res, next) => {
+  if (!migrator.isRunning()) {
+    res.json({});
+    next();
+    return;
+  }
+
+  setTimeout(() => {
+    res.json(migrator.getMigrationSchemas());
+    next();
+  }, 2000);
+});
+
 app.get('/tdma/v1/languages', (req, res, next) => {
   setTimeout(() => {
     res.send({
