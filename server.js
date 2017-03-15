@@ -18,7 +18,6 @@ const logger = require('./middleware/logger');
 const config = new Config();
 const migrator = new Migrator();
 const tdMigrator = new Td2TdMigrator(config);
-var configuration = {};
 
 app.use(logger);
 app.use(bodyParser.json());
@@ -281,12 +280,14 @@ app.get('/tdma/v1/languages', (req, res, next) => {
 });
 
 app.post('/tdma/v1/configurations', (req, res, next) => {
+  const settings = config.get('redshift-settings', {});
+
   setTimeout(() => {
     var data = req.body;
     data.forEach(function (item) {
-       console.log(`Saving configuration:` + item.key + ', ' + item.value);
-       configuration[item.key] = item.value;
-    });   
+       settings[item.key] = item.value;
+    });
+    config.set('redshift-settings', settings);
     res.json({});
     next();
   }, 1000);
@@ -296,12 +297,14 @@ app.post('/tdma/v1/configurations', (req, res, next) => {
 });
 
 app.get('/tdma/v1/configurations/:config', (req, res, next) => {
+  const settings = config.get('redshift-settings', {});
+
   setTimeout(() => {
-    if (configuration[req.params.config] != undefined) {
-      res.send(      
+    if (settings[req.params.config] != undefined) {
+      res.send(
           {
             key: req.params.config,
-            value: configuration[req.params.config]
+            value: settings[req.params.config]
         }
       );
     }else {
