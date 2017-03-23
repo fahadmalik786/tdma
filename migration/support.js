@@ -59,6 +59,27 @@ class Utils {
     return schemas;
   }
 
+  static getRandomScheduledSchemas(n) {
+    const schemas = [];
+    for (let i = 0; i < n; i++) {
+      const schema = Utils.getRandomSchema();
+
+      if (schemas.indexOf(schema) <= -1) {
+        schemas.push({
+          name: schema,
+          priority: Utils.getRandom(5),
+          scheduled: Utils.fmtDate(new Date()),
+          status: Utils.getRandomStatus()
+        });
+      }
+    }
+    return schemas;
+  }
+
+  static getRandomStatus() {
+    return Utils.getRandomElement(status);
+  }
+
   static getRandomError() {
     return Utils.getRandomElement(errorMessages);
   }
@@ -148,5 +169,7 @@ const errorMessages = [
   'ORA-03113: end-of-file on communication channel',
   'ORA-01000: maximum open cursors exceeded',
 ];
+
+const status = ['pending', 'running', 'finished'];
 
 module.exports = { FakeDataProgress, Utils };
