@@ -172,6 +172,6 @@ const errorMessages = [
   'ORA-01000: maximum open cursors exceeded',
 ];
 
-const status = ['pending', 'running', 'finished'];
+const status = ['SCHEDULED', 'RUNNING', 'COMPLETED'];
 
 module.exports = { FakeDataProgress, Utils };
