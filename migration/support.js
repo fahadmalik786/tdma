@@ -61,6 +61,7 @@ class Utils {
 
   static getRandomScheduledSchemas(n) {
     const schemas = [];
+    const returnValue = {schemas:undefined};
     for (let i = 0; i < n; i++) {
       const schema = Utils.getRandomSchema();
 
@@ -73,7 +74,8 @@ class Utils {
         });
       }
     }
-    return schemas;
+    returnValue.schemas = schemas;
+    return returnValue;
   }
 
   static getRandomStatus() {
@@ -170,6 +172,6 @@ const errorMessages = [
   'ORA-01000: maximum open cursors exceeded',
 ];
 
-const status = ['pending', 'running', 'finished'];
+const status = ['SCHEDULED', 'RUNNING', 'COMPLETED'];
 
 module.exports = { FakeDataProgress, Utils };
