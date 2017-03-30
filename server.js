@@ -227,7 +227,7 @@ app.get('/tdma/v1/migration-schemas', (req, res, next) => {
   setTimeout(() => {
     res.json(migrator.getMigrationSchemas());
     next();
-  }, 2000);
+  }, 1000);
 });
 
 app.get('/tdma/v1/languages', (req, res, next) => {

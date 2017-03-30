@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 class FakeDataProgress {
   constructor(inventory, updateFreq) {
     this.inventory = inventory;
@@ -59,18 +61,36 @@ class Utils {
     return schemas;
   }
 
+  static getRandomMinsAgo(n) {
+    return moment().subtract(Utils.getRandom(n), 'minutes');
+  }
+
   static getRandomScheduledSchemas(n) {
     const schemas = [];
     const returnValue = {schemas:undefined};
     for (let i = 0; i < n; i++) {
       const schema = Utils.getRandomSchema();
+      const status = Utils.getRandomSchemaStatus();
+
+      let migration_start;
+      let migration_completed;
 
       if (schemas.indexOf(schema) <= -1) {
+        if (status === 'RUNNING') {
+          migration_start = Utils.getRandomMinsAgo(30);
+        } else if (status === 'COMPLETED') {
+          migration_start = Utils.getRandomMinsAgo(120);
+          migration_completed = moment(migration_start).add(Utils.getRandom(45), 'minutes');
+          migration_completed = moment(Math.min(migration_completed, new Date()));
+        }
+
         schemas.push({
           name: schema,
           priority: Utils.getRandom(5),
           scheduled: Utils.fmtDate(new Date()),
-          status: Utils.getRandomStatus()
+          status: status,
+          migration_start,
+          migration_completed,
         });
       }
     }
@@ -78,8 +98,8 @@ class Utils {
     return returnValue;
   }
 
-  static getRandomStatus() {
-    return Utils.getRandomElement(status);
+  static getRandomSchemaStatus() {
+    return Utils.getRandomElement(schemaStatus);
   }
 
   static getRandomError() {
@@ -172,6 +192,6 @@ const errorMessages = [
   'ORA-01000: maximum open cursors exceeded',
 ];
 
-const status = ['SCHEDULED', 'RUNNING', 'COMPLETED'];
+const schemaStatus = ['SCHEDULED', 'RUNNING', 'COMPLETED'];
 
 module.exports = { FakeDataProgress, Utils };
