@@ -72,15 +72,15 @@ class Utils {
       const schema = Utils.getRandomSchema();
       const status = Utils.getRandomSchemaStatus();
 
-      let migration_start;
+      let migration_started;
       let migration_completed;
 
       if (schemas.indexOf(schema) <= -1) {
         if (status === 'RUNNING') {
-          migration_start = Utils.getRandomMinsAgo(30);
+          migration_started = Utils.getRandomMinsAgo(30);
         } else if (status === 'COMPLETED') {
-          migration_start = Utils.getRandomMinsAgo(120);
-          migration_completed = moment(migration_start).add(Utils.getRandom(45), 'minutes');
+          migration_started = Utils.getRandomMinsAgo(120);
+          migration_completed = moment(migration_started).add(Utils.getRandom(45), 'minutes');
           migration_completed = moment(Math.min(migration_completed, new Date()));
         }
 
@@ -89,7 +89,7 @@ class Utils {
           priority: Utils.getRandom(5),
           scheduled: Utils.fmtDate(new Date()),
           status: status,
-          migration_start,
+          migration_started,
           migration_completed,
         });
       }
