@@ -14,6 +14,10 @@ class Inventory {
     this.migPointer = 0;
     this.tablePercentageBuffer = [];
     this.migrationSchemas = Utils.getRandomScheduledSchemas(Utils.getRandom(10));
+    this.migrationSchemas.schemas = this.migrationSchemas.schemas.map((s, i) => {
+      s.id = i;
+      return s;
+    });
   }
 
   addTable() {
@@ -108,6 +112,14 @@ class Inventory {
     idx++;
 
     this.files.push({ timestamp, message });
+  }
+
+  startSchema(id) {
+    const schema = this.migrationSchemas.schemas.find(s => s.id === parseInt(id, 10));
+    if (schema) {
+      schema.migration_started = new Date();
+      schema.status = 'RUNNING';
+    }
   }
 
   get totalSize() {

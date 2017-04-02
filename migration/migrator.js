@@ -39,6 +39,10 @@ class Migrator {
     return this.inventory.migrationSchemas;
   }
 
+  startSchema(id) {
+    this.inventory.startSchema(id);
+  }
+
   getErrors() {
     return this.inventory.activities.filter(a => !a.success);
   }

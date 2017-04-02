@@ -230,6 +230,11 @@ app.get('/tdma/v1/migration-schemas', (req, res, next) => {
   }, 1000);
 });
 
+app.put('/tdma/v1/migration-schemas', (req, res) => {
+  migrator.startSchema(req.body.id);
+  res.json({});
+});
+
 app.get('/tdma/v1/languages', (req, res, next) => {
   setTimeout(() => {
     res.send({
